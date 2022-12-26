@@ -9,7 +9,7 @@ pipeline {
                 sh '''
                 kubectl apply -f db-service.yml
                 kubectl apply -f cache.yml
-                kubectl apply -f saleor.yml
+                kubectl delete -f saleor.yml
                 '''
             }
         }
