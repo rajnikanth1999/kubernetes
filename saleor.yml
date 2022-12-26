@@ -32,7 +32,7 @@ spec:
             - 0.0.0.0:8000
           env:
             - name: ALLOWED_HOSTS
-              value: "localhost,api"
+              value: "localhost,api,0.0.0.0"
             - name: STOREFRONT_URL
               value: "http://localhost:3000/"
             - name: AEGER_AGENT_HOST
@@ -54,5 +54,5 @@ spec:
     app: saleor
   ports:
     - name: saleor
-      port: 80
+      port: 8000
       targetPort: 8000
