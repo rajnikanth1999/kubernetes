@@ -45,5 +45,5 @@ spec:
     app: saleor
   ports:
     - name: saleor
-      port: 8000
+      port: 80
       targetPort: 8000
