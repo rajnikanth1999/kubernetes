@@ -30,6 +30,15 @@ spec:
             - manage.py
             - runserver
             - 0.0.0.0:8000
+          env:
+            - name: ALLOWED_HOSTS
+              value: "localhost,api"
+            - name: STOREFRONT_URL
+              value: "http://localhost:3000/"
+            - name: AEGER_AGENT_HOST
+              value: "jaeger"
+            - name: DASHBOARD_URL
+              value: "http://localhost:9000/"
       imagePullSecrets:
         - name: regcred
 
