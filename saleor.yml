@@ -5,7 +5,6 @@ metadata:
   name: saleor-server
 spec:
   minReadySeconds: 10
-  replicas: 4
   selector:
     matchLabels:
       app: saleor
@@ -26,6 +25,22 @@ spec:
           ports:
             - containerPort: 8000
               protocol: TCP
+          command:
+            - python
+            - manage.py
+            - runserver
+            - 0.0.0.0:8000
+          env:
+            - name: ALLOWED_HOSTS
+              value: "localhost,api,0.0.0.0"
+            - name: STOREFRONT_URL
+              value: "http://localhost:3000/"
+            - name: AEGER_AGENT_HOST
+              value: "jaeger"
+            - name: DASHBOARD_URL
+              value: "http://localhost:9000/"
+            - name: SECRET_KEY
+              value: "changeme"
       imagePullSecrets:
         - name: regcred
 
