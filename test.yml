@@ -2,10 +2,10 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: jenkins-server
+  name: jenkins-deploy
 spec:
   minReadySeconds: 10
-  replicas: 2
+  replicas: 4
   selector:
     matchLabels:
       app: jenkins
@@ -16,28 +16,34 @@ spec:
       maxUnavailable: 25%
   template:
     metadata:
-      name: jenkins
+      name: jenkins-pod
       labels:
         app: jenkins
+        version: "2.60.3"
     spec:
       containers:
         - name: jenkins
-          image: jenkins/jenkins
+          image: jenkins:2.60.3
           ports:
             - containerPort: 8080
               protocol: TCP
-
-
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 8080
+          livenessProbe:
+            tcpSocket:
+              port: 8080
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: jenkins-loadbalancer
+  name: jenkins-svc-lb
 spec:
   type: LoadBalancer
   selector:
     app: jenkins
   ports:
-    - name: jenkinsport
-      port: 80
+    - name: webport
+      port: 35000
       targetPort: 8080
