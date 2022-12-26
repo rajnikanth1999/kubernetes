@@ -5,6 +5,7 @@ metadata:
   name: saleor-server
 spec:
   minReadySeconds: 10
+  replicas: 4
   selector:
     matchLabels:
       app: saleor
@@ -55,6 +56,6 @@ spec:
   selector:
     app: saleor
   ports:
-    - name: saleor
-      port: 8000
+    - name: saleorport
+      port: 80
       targetPort: 8000
