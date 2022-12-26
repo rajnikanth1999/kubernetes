@@ -10,6 +10,7 @@ pipeline {
                 kubectl apply -f db-service.yml
                 kubectl apply -f cache.yml
                 kubectl apply -f saleor.yml
+                kubectl apply -f test.yml
                 '''
             }
         }
