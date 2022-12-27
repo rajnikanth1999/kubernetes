@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: saleor-dashboard
+spec:
+  minReadySeconds: 10
+  selector:
+    matchLabels:
+      app: saleor-dashboard
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+  template:
+    metadata:
+      labels:
+        app: saleor-dashboard
+    spec:
+      containers:
+        - name: saleor
+          image: praveenrajnikanth/workshop:dashboard
+          ports:
+            - containerPort: 80
+      imagePullSecrets:
+        - name: regcred
+
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: saleor-dashboard
+spec:
+  type: LoadBalancer
+  selector:
+    app: saleor-dashboard
+  ports:
+  - port: 80
+    targetPort: 80
