@@ -2,10 +2,9 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: jenkins-deploy
+  name: jenkins-server
 spec:
   minReadySeconds: 10
-  replicas: 4
   selector:
     matchLabels:
       app: jenkins
@@ -16,34 +15,46 @@ spec:
       maxUnavailable: 25%
   template:
     metadata:
-      name: jenkins-pod
+      name: jenkins
       labels:
         app: jenkins
-        version: "2.60.3"
     spec:
       containers:
         - name: jenkins
-          image: jenkins:2.60.3
+          image: praveenrajnikanth/workshop:saleor
           ports:
-            - containerPort: 8080
+            - containerPort: 8000
               protocol: TCP
-          readinessProbe:
-            httpGet:
-              path: /
-              port: 8080
-          livenessProbe:
-            tcpSocket:
-              port: 8080
+          command:
+            - python
+            - manage.py
+            - runserver
+            - 0.0.0.0:8000
+          env:
+            - name: ALLOWED_HOSTS
+              value: "localhost,api,0.0.0.0"
+            - name: STOREFRONT_URL
+              value: "http://localhost:3000/"
+            - name: AEGER_AGENT_HOST
+              value: "jaeger"
+            - name: DASHBOARD_URL
+              value: "http://localhost:9000/"
+            - name: SECRET_KEY
+              value: "changeme"
+      imagePullSecrets:
+        - name: regcred
+
+
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: jenkins-svc-lb
+  name: jenkins-loadbalancer
 spec:
   type: LoadBalancer
   selector:
     app: jenkins
   ports:
-    - name: webport
-      port: 35000
-      targetPort: 8080
+    - name: jenkinsport
+      port: 80
+      targetPort: 8000

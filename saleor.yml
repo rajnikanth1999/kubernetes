@@ -1,11 +1,9 @@
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: saleor-server
+  name: saleor
 spec:
   minReadySeconds: 10
-  replicas: 4
   selector:
     matchLabels:
       app: saleor
@@ -16,7 +14,6 @@ spec:
       maxUnavailable: 25%
   template:
     metadata:
-      name: saleor
       labels:
         app: saleor
     spec:
@@ -25,12 +22,6 @@ spec:
           image: praveenrajnikanth/workshop:saleor
           ports:
             - containerPort: 8000
-              protocol: TCP
-          command:
-            - python
-            - manage.py
-            - runserver
-            - 0.0.0.0:8000
           env:
             - name: ALLOWED_HOSTS
               value: "localhost,api,0.0.0.0"
@@ -50,12 +41,11 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: saleor-loadbalancer
+  name: saleor
 spec:
   type: LoadBalancer
   selector:
     app: saleor
   ports:
-    - name: saleorport
-      port: 80
-      targetPort: 8000
+  - port: 80
+    targetPort: 8000
