@@ -31,8 +31,16 @@ spec:
               value: "jaeger"
             - name: DASHBOARD_URL
               value: "http://localhost:9000/"
+            - name: DATABASE_URL
+              value: "postgres://saleor:saleor@db/saleor"
+            - name: DEFAULT_FROM_EMAIL
+              value: "noreply@example.com"
+            - name: CELERY_BROKER_URL
+              value: "redis://redis:6379/1"
             - name: SECRET_KEY
               value: "changeme"
+            - name: DEFAULT_CHANNEL_SLUG
+              value: "default-channel"
       imagePullSecrets:
         - name: regcred
 
