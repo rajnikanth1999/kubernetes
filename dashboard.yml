@@ -36,5 +36,5 @@ spec:
   selector:
     app: saleor-dashboard
   ports:
-  - port: 80
+  - port: 9000
     targetPort: 80
