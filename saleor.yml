@@ -41,6 +41,9 @@ spec:
               value: "changeme"
             - name: DEFAULT_CHANNEL_SLUG
               value: "default-channel"
+          volumeMounts:
+            - name: saleor
+              mountPath: /app/media
       imagePullSecrets:
         - name: regcred
 

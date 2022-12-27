@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: storefront
+spec:
+  selector:
+    matchLabels:
+      app: storefront
+  template:
+    metadata:
+      labels:
+        app: storefront
+    spec:
+      containers:
+      - name: storefront
+        image: praveenrajnikanth/workshop:store
+        ports:
+        - containerPort: 3000
+        command:
+          - sh
+        args:
+          - -c
+          - "(nginx &) && pnpm turbo run start --filter=storefront..."
+
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: storefront
+spec:
+  selector:
+    app: storefront
+  ports:
+  - port: 3000
+    targetPort: 3000

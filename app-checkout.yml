@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: saleor-app-checkout
+spec:
+  selector:
+    matchLabels:
+      app: app-checkout
+  template:
+    metadata:
+      labels:
+        app: app-checkout
+    spec:
+      containers:
+      - name: app-checkout
+        image: praveenrajnikanth/workshop:store
+        ports:
+        - containerPort: 3001
+        command:
+          - pnpm
+        args:
+          - turbo
+          - run
+          - start
+          - --filter=saleor-app-checkout...
+
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: saleor-app-checkout
+spec:
+  selector:
+    app: app-checkout
+  ports:
+  - port: 3001
+    targetPort: 3001

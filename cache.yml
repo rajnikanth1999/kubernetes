@@ -40,3 +40,21 @@ spec:
           ports:
             - containerPort: 6379
               protocol: TCP
+          volumeMounts:
+            - mountPath: /data
+              name: azure-mysql-vol
+
+
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: cache-azure-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: managed-premium
+  resources:
+    requests:
+      storage: 1Gi

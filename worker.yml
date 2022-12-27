@@ -1,12 +1,12 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: saleor
+  name: saleor-platform-worker-1
 spec:
   minReadySeconds: 10
   selector:
     matchLabels:
-      app: saleor
+      app: saleor-worker
   strategy:
     type: RollingUpdate
     rollingUpdate:
@@ -15,13 +15,11 @@ spec:
   template:
     metadata:
       labels:
-        app: saleor
+        app: saleor-worker
     spec:
       containers:
         - name: saleor
           image: praveenrajnikanth/workshop:saleor
-          ports:
-            - containerPort: 8000
           env:
             - name: ALLOWED_HOSTS
               value: "localhost,api,0.0.0.0"
@@ -41,19 +39,37 @@ spec:
               value: "changeme"
             - name: DEFAULT_CHANNEL_SLUG
               value: "default-channel"
+          volumeMounts:
+            - name: saleor
+              mountPath: /app/media
       imagePullSecrets:
         - name: regcred
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: saleor-media
+spec:
+  resources:
+    requests:
+      storage: 1Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteOnce
+
+
+
 
 
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: saleor
+  name: saleor-worker
 spec:
-  type: LoadBalancer
   selector:
-    app: saleor
+    app: saleor-worker
   ports:
   - port: 80
     targetPort: 8000

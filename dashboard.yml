@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: saleor-dashboard
+  name: saleor-platform-dashboard-1
 spec:
   minReadySeconds: 10
   selector:
