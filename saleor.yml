@@ -19,34 +19,9 @@ spec:
     spec:
       containers:
         - name: saleor
-          image: praveenrajnikanth/workshop:saleor
+          image: httpd
           ports:
-            - containerPort: 8000
-          env:
-            - name: ALLOWED_HOSTS
-              value: "localhost,api,0.0.0.0"
-            - name: STOREFRONT_URL
-              value: "http://localhost:3000/"
-            - name: AEGER_AGENT_HOST
-              value: "jaeger"
-            - name: DASHBOARD_URL
-              value: "http://localhost:9000/"
-            - name: DATABASE_URL
-              value: "postgres://saleor:saleor@db/saleor"
-            - name: DEFAULT_FROM_EMAIL
-              value: "noreply@example.com"
-            - name: CELERY_BROKER_URL
-              value: "redis://redis:6379/1"
-            - name: SECRET_KEY
-              value: "changeme"
-            - name: DEFAULT_CHANNEL_SLUG
-              value: "default-channel"
-          volumeMounts:
-            - name: saleor
-              mountPath: /app/media
-      imagePullSecrets:
-        - name: regcred
-
+            - containerPort: 80
 
 ---
 apiVersion: v1
@@ -59,4 +34,4 @@ spec:
     app: saleor
   ports:
   - port: 80
-    targetPort: 8000
+    targetPort: 80
